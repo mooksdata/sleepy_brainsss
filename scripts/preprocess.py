@@ -266,7 +266,7 @@ def main(args):
         for func in funcs:
             directory = os.path.join(func, "fictrac")
             if os.path.exists(directory):
-                args = {"logfile": logfile, "directory": directory, "fps": 100}
+                args = {"logfile": logfile, "directory": directory, "fps": int(settings.get("fictrac_fps", 100))}
                 script = "fictrac_qc.py"
                 job_id = brainsss.sbatch(
                     jobname="fictracqc",
