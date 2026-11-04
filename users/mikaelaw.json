@@ -26,5 +26,8 @@
     "channel_change": "False",
     "tf_to_STA": "False",
     "noise_regression": "False",
-    "fictrac_fps": "100"
+    "fictrac_fps": "200",
+    "fictrac_camera": "18384364",
+    "jackfish_path": "/oak/stanford/groups/trc/data/Mook/jackfish_videos",
+    "fictrac_output_path": "/oak/stanford/groups/trc/data/Mook/fictrac_output"
 }
