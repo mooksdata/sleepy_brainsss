@@ -87,17 +87,32 @@ def main(xml_file):
         if bidirectional and t % 2 == 1:
             frames = frames[::-1]
         volumes.append(frames)
+    # Bruker leaves the z position out of a few frames (on this rig, one slice per volume),
+    # so compare only slices whose z is recorded in both volume 1 and the volume checked.
     ref_z = [frame_z(f) for f in volumes[0]]
-    if None not in ref_z:
-        for t, frames in enumerate(volumes):
-            zs = [frame_z(f) for f in frames]
-            if None in zs or max(abs(a - b) for a, b in zip(zs, ref_z)) > 1.0:
-                sys.exit('Volume {} slices are not at the same z as volume 1 after reordering '
-                         '(z {}..{} vs {}..{}): stopping rather than writing a scrambled nii.'.format(
-                             t + 1, zs[0], zs[-1], ref_z[0], ref_z[-1]))
-        print('z order checked: all {} volumes run z {} -> {}'.format(num_t, ref_z[0], ref_z[-1]))
-    else:
-        print('WARNING: no z positions in the xml, slice order not checked.')
+    n_checked, n_unchecked, no_z_slices = 0, 0, {}
+    for t, frames in enumerate(volumes):
+        zs = [frame_z(f) for f in frames]
+        known = [i for i in range(num_z) if zs[i] is not None and ref_z[i] is not None]
+        if len(known) < num_z / 2:
+            sys.exit('Volume {}: only {} of {} slices have a recorded z, too few to check the '
+                     'slice order: stopping.'.format(t + 1, len(known), num_z))
+        for i in range(num_z):
+            if zs[i] is None:
+                no_z_slices[i + 1] = no_z_slices.get(i + 1, 0) + 1
+        bad = [i for i in known if abs(zs[i] - ref_z[i]) > 1.0]
+        if bad:
+            i = bad[0]
+            sys.exit('Volume {} slice {} is at z={} but slice {} of volume 1 is at z={} after '
+                     'reordering: stopping rather than writing a scrambled nii.'.format(
+                         t + 1, i + 1, zs[i], i + 1, ref_z[i]))
+        n_checked += len(known)
+        n_unchecked += num_z - len(known)
+    print('z order checked on {} of {} slices; {} not checkable (no z recorded). '
+          'Slices without z: {}'.format(
+              n_checked, n_checked + n_unchecked, n_unchecked,
+              ', '.join('slice {} in {} volume(s)'.format(s, c)
+                        for s, c in sorted(no_z_slices.items())[:10]) or 'none'), flush=True)
 
     first = read_multipage(os.path.join(
         data_dir, volumes[0][0].findall('File')[0].get('filename')))
