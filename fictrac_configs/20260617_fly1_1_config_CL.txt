@@ -1,0 +1,31 @@
+## FicTrac v2.1.1 config file
+## 20260617 fly1 session 1, ball camera 18384364 (Jackfish, 200 fps, 720x540).
+## Based on Yandan's rig config (same camera, Oct 31 2026). Changed: roi_circ (13 points clicked
+## in Fiji on frame_60s.png; fit centre 419,414 r=282 px, max 4 px off), roi_ignr (leg polygon +
+## Yandan's bottom strip), roi_c/roi_r removed so FicTrac recomputes them from roi_circ,
+## do_display n, socket lines removed. c2a_* (camera-to-fly transform) and vfov kept from Yandan.
+c2a_cnrs_xy      : { 191, 171, 128, 272, 20, 212, 99, 132 }
+c2a_cnrs_yz      : { 172, 156, 410, 161, 409, 470, 172, 478 }
+c2a_r            : { 0.768285, 1.721900, 1.723332 }
+c2a_src          : c2a_cnrs_yz
+c2a_t            : { -0.213134, 0.146582, 19.680928 }
+do_display       : n
+frame_buffer_len : 10
+max_bad_frames   : -1
+opt_bound        : 0.1
+opt_do_global    : n
+opt_max_err      : -1.000000
+opt_max_evals    : 50
+opt_tol          : 0.001
+q_factor         : 6
+roi_circ         : { 164, 523, 139, 458, 140, 372, 164, 289, 226, 215, 320, 152, 484, 143, 579, 181, 650, 251, 693, 345, 688, 502, 700, 429, 410, 133 }
+roi_ignr         : { { 388, 135, 398, 109, 425, 100, 450, 98, 469, 101, 490, 105, 514, 152, 484, 143, 469, 138, 452, 135, 414, 133 }, { 14, 442, 712, 440, 707, 539, 35, 538 } }
+save_debug       : n
+save_raw         : n
+save_vids_in_mem : n
+src_fn           : cam_18384364.mp4
+src_fps          : -1.000000
+thr_ratio        : 1.3
+thr_win_pc       : 0.2
+vfov             : 3.88
+vid_codec        : h264
