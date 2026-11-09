@@ -117,7 +117,7 @@ ARGS="{\"PWD\":\"$PWD\",\"BUILDFLIES\":\"$BUILDFLIES\",\"FLIES\":\"$FLIES\",\"DI
 \"CHANNEL_CHANGE\":\"$CHANNEL_CHANGE\",\"H5_TO_NII\":\"$H5_TO_NII\",\"TEMPORAL_MEAN_BRAIN_POST\":\"$TEMPORAL_MEAN_BRAIN_POST\",\
 \"FUNC2ANAT\":\"$FUNC2ANAT\",\"BEST_FLIES\":\"$BEST_FLIES\",\"WHOLE_BRAIN_INTERP\":\"$WHOLE_BRAIN_INTERP\",\"ANAT2ATLAS\":\"$ANAT2ATLAS\"}"
 
-ml python/3.6
+ml gcc/6.3.0 python/3.6 py-numpy/1.14.3_py36 py-pandas/0.23.0_py36 viz py-scikit-learn/0.19.1_py36 py-ants/0.3.2_py36
 date
 echo "Running: python3 -u ./preprocess.py $ARGS"
 python3 -u ./preprocess.py $ARGS

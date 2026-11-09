@@ -345,6 +345,7 @@ def main(args):
         ### Motion Correction ###
         #########################
 
+        job_ids = []  # wait for every job, not just the last one submitted
         for funcanat, dirtype in zip(funcanats, dirtypes):
 
             directory = os.path.join(funcanat, "imaging")
@@ -385,8 +386,10 @@ def main(args):
                 nodes=nodes,
                 global_resources=global_resources,
             )
+            job_ids.append(job_id)
         ### currently submitting these jobs simultaneously since using global resources
-        brainsss.wait_for_job(job_id, logfile, com_path)
+        for job_id in job_ids:
+            brainsss.wait_for_job(job_id, logfile, com_path)
    
     if temporal_mean_brain_post:
 
@@ -394,6 +397,7 @@ def main(args):
         ### Create temporal mean brains, POST ###
         #########################################
 
+        job_ids = []  # wait for every job, not just the last one submitted
         for funcanat, dirtype in zip(funcanats, dirtypes):
             directory = os.path.join(funcanat, "moco")
 
@@ -416,7 +420,9 @@ def main(args):
                 nodes=nodes,
                 global_resources=False,
             )
-        brainsss.wait_for_job(job_id, logfile, com_path)
+            job_ids.append(job_id)
+        for job_id in job_ids:
+            brainsss.wait_for_job(job_id, logfile, com_path)
 
     if clean_anat:
 
